@@ -1,30 +1,28 @@
 #!/bin/bash
 
-# Define the root directory for projects
-ROOT_DIR="projects"
+# Define the main project directory
+PROJECTS_DIR="projects"
 
-# Create the root directory if it does not exist
-mkdir -p "$ROOT_DIR"
+# Create the main projects directory if it doesn't exist
+mkdir -p "$PROJECTS_DIR"
 
-# List of project directories to be created
-project_dirs=("facebook" "google" "meta" "oracle")
+# Define the list of subdirectories
+SUBDIRS=("facebook" "google/oriserve" "meta/oriserve" "oracle")
 
-# Iterate over each project directory
-for project in "${project_dirs[@]}"; do
-  # Define the full path to the project directory
-  project_path="$ROOT_DIR/$project"
+# Iterate over the subdirectories
+for SUBDIR in "${SUBDIRS[@]}"; do
+  # Create the subdirectory
+  mkdir -p "$PROJECTS_DIR/$SUBDIR"
   
-  # Create the project directory
-  mkdir -p "$project_path"
-  
-  # Check if the 'oriserve' directory exists within the project directory
-  if [ ! -d "$project_path/oriserve" ]; then
-    # Create 'oriserve' directory
-    mkdir "$project_path/oriserve"
+  # Check if 'oriserve' is part of the path and is the last directory
+  if [[ "$SUBDIR" == "google/oriserve" || "$SUBDIR" == "meta/oriserve" ]]; then
+    # Extract the parent folder name
+    PARENT_DIR=$(basename "$(dirname "$PROJECTS_DIR/$SUBDIR")")
     
-    # Create a file in the 'oriserve' directory with the project name
-    echo "$project" > "$project_path/oriserve/project_name.txt"
+    # Create a file inside the 'oriserve' folder with the parent folder name
+    echo "$PARENT_DIR" > "$PROJECTS_DIR/$SUBDIR/parent_folder.txt"
   fi
 done
 
-echo "Directories and files have been created successfully."
+echo "Directories and files created successfully."
+
