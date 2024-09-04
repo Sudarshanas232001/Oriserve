@@ -6,21 +6,25 @@ PROJECTS_DIR="projects"
 # Create the main projects directory if it doesn't exist
 mkdir -p "$PROJECTS_DIR"
 
-# Define the list of subdirectories
-SUBDIRS=("facebook" "google/oriserve" "meta/oriserve" "oracle")
+# Define the list of main directories
+MAIN_DIRS=("facebook" "google" "meta" "oracle")
 
-# Iterate over the subdirectories
-for SUBDIR in "${SUBDIRS[@]}"; do
-  # Create the subdirectory
-  mkdir -p "$PROJECTS_DIR/$SUBDIR"
+# Iterate over the main directories
+for MAIN_DIR in "${MAIN_DIRS[@]}"; do
+  # Define the full path for the main directory
+  FULL_PATH="$PROJECTS_DIR/$MAIN_DIR"
   
-  # Check if 'oriserve' is part of the path and is the last directory
-  if [[ "$SUBDIR" == "google/oriserve" || "$SUBDIR" == "meta/oriserve" ]]; then
-    # Extract the parent folder name
-    PARENT_DIR=$(basename "$(dirname "$PROJECTS_DIR/$SUBDIR")")
-    
-    # Create a file inside the 'oriserve' folder with the parent folder name
-    echo "$PARENT_DIR" > "$PROJECTS_DIR/$SUBDIR/parent_folder.txt"
+  # Create the main directory
+  mkdir -p "$FULL_PATH"
+  
+  # Remove any existing parent_folder.txt and create a new one
+  echo "$MAIN_DIR" > "$FULL_PATH/parent_folder.txt"
+  
+  # Check if the directory is 'google' or 'meta'
+  if [[ "$MAIN_DIR" == "google" || "$MAIN_DIR" == "meta" ]]; then
+    # Create the 'oriserve' subdirectory inside it
+    ORISERVE_PATH="$FULL_PATH/oriserve"
+    mkdir -p "$ORISERVE_PATH"
   fi
 done
 
